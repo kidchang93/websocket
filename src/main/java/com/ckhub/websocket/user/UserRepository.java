@@ -1,4 +1,4 @@
-package com.ckhub.websocket.config.user;
+package com.ckhub.websocket.user;
 
 
 import org.springframework.data.mongodb.repository.MongoRepository;

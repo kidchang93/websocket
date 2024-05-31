@@ -1,4 +1,4 @@
-package com.ckhub.websocket.config.user;
+package com.ckhub.websocket.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
