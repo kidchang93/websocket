@@ -4,6 +4,7 @@ import com.ckhub.websocket.chatroom.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,7 +27,14 @@ public class ChatMessageService {
         return chatMessage;
     }
 
-    public List<ChatMessage> asdfads(){
-        return null;
+    public List<ChatMessage> findChatMessages(
+            String senderId, String recipientId
+    ){
+
+        var chatId = chatRoomService.getChatRoomId(
+                senderId,
+                recipientId,
+                false);
+        return chatId.map(repository::findByChatId).orElse(new ArrayList<>());
     }
 }
