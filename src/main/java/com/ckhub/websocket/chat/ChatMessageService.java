@@ -26,5 +26,7 @@ public class ChatMessageService {
         return chatMessage;
     }
 
-    public List<ChatMessage>
+    public List<ChatMessage> asdfads(){
+        return null;
+    }
 }
