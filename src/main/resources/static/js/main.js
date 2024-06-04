@@ -14,6 +14,7 @@ let nickname = null;
 let fullname = null;
 let selectedUserId = null;
 
+// 연결하는 메서드
 function connect(event) {
     nickname = document.querySelector('#nickname').value.trim();
     fullname = document.querySelector('#fullname').value.trim();
@@ -22,31 +23,35 @@ function connect(event) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
 
-        const socket = new SockJS('/ws');
-        stompClient = Stomp.over(socket);
+        const socket = new SockJS('/ws');           // WebSocketConfig 의 registerStompEndpoints 에서 설정한 엔드포인트
+        stompClient = Stomp.over(socket);                   // 그 socket 매개변수를 전달
 
         stompClient.connect({}, onConnected, onError);
     }
     event.preventDefault();
 }
 
-
+// 연결이 되었으면...
 function onConnected() {
     stompClient.subscribe(`/user/${nickname}/queue/messages`, onMessageReceived);
     stompClient.subscribe(`/user/public`, onMessageReceived);
 
-    // register the connected user
-    stompClient.send("/app/user.addUser",
+    // 연결된 사용자를 등록.
+    // webSocketConfig 에서 접두사 정의한 것 + userController 에서 정의된 주소
+    stompClient.send("/app/user.addUser",       
         {},
         JSON.stringify({nickName: nickname, fullName: fullname, status: 'ONLINE'})
     );
     document.querySelector('#connected-user-fullname').textContent = fullname;
+    // 연결된 사용자를 표시한다.
     findAndDisplayConnectedUsers().then();
 }
 
+// 비동기 처리를 위한 async await
 async function findAndDisplayConnectedUsers() {
     const connectedUsersResponse = await fetch('/users');
     let connectedUsers = await connectedUsersResponse.json();
+                                                                    // 백엔드에서 가져온 이름
     connectedUsers = connectedUsers.filter(user => user.nickName !== nickname);
     const connectedUsersList = document.getElementById('connectedUsers');
     connectedUsersList.innerHTML = '';
@@ -60,7 +65,7 @@ async function findAndDisplayConnectedUsers() {
         }
     });
 }
-
+// 사용자 추가
 function appendUserElement(user, connectedUsersList) {
     const listItem = document.createElement('li');
     listItem.classList.add('user-item');
@@ -69,7 +74,7 @@ function appendUserElement(user, connectedUsersList) {
     const userImage = document.createElement('img');
     userImage.src = '../img/user_icon.png';
     userImage.alt = user.fullName;
-
+    console.log("userImage: ",userImage);
     const usernameSpan = document.createElement('span');
     usernameSpan.textContent = user.fullName;
 
@@ -82,7 +87,6 @@ function appendUserElement(user, connectedUsersList) {
     listItem.appendChild(receivedMsgs);
 
     listItem.addEventListener('click', userItemClick);
-
     connectedUsersList.appendChild(listItem);
 }
 

@@ -1,8 +1,8 @@
 spring:
   data:
     mongodb:
-      username: ckhub
-      password: ckhub
+      username: ckCompany
+      password: 12345
       host: localhost
       port: 27017
       database: chat_app
