@@ -48,8 +48,8 @@ public class ChatRoomService {
 
         ChatRoom recipientSender = ChatRoom.builder()
                 .chatId(chatId)
-                .senderId(senderId).
-                recipientId(recipientId)
+                .senderId(senderId)
+                .recipientId(recipientId)
                 .build();
 
         chatRoomRepository.save(senderRecipient);
