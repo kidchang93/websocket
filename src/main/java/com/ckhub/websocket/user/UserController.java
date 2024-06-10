@@ -24,6 +24,7 @@ public class UserController {
     @SendTo("/user/topic")
     public User addUser(@Payload User user) {
         service.saveUser(user);
+        log.info("addUser: {}", user);
         return user;
     }
 
